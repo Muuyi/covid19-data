@@ -1,0 +1,44 @@
+.covid-header{
+    text-align:center;
+}
+.login-section{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+.login-area{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+.login{
+    width:100%;
+    background-color:#FFFFFF;
+}
+@media screen and (max-width: 768px){
+    .login-section {
+        width:100%;
+        min-height:100vh;
+    }
+    .covid-header{
+        color:#22313F;
+        font-weight:bolder;
+    }
+}
+@media screen and (min-width:768px){
+    .body-section {
+        width:100%;
+        min-height:100vh;
+        background-color:#22313f;
+    }
+    .covid-header{
+        color:#FFFFFF;
+        font-weight:bolder;
+    }
+    .login{
+        min-width:300px;
+        background-color:#FFFFFF;
+    }
+}
