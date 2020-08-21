@@ -17,6 +17,14 @@
     width:100%;
     background-color:#FFFFFF;
 }
+.dashboard-header{
+    background-color:#22313f;
+    display:flex;
+    justify-content:space-between;
+    color:#FFFFFF;
+    font-weight:bolder;
+    padding:10px;
+}
 @media screen and (max-width: 768px){
     .login-section {
         width:100%;

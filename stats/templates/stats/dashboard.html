@@ -1,0 +1,11 @@
+{% include 'stats/header.html' %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col dashboard-header">
+            <h3>Covid-19 Data</h3>
+            <h6>Welcome, <i><b>{{ user.username }}!</b></i></h6>
+            <a href="{% url 'logout' %}"><button class="btn btn-outline-danger"><i class="fas fa-power-off"></i> Logout</button></a>
+        </div>
+    </div>
+</div>
+{% include 'stats/footer.html' %}
