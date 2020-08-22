@@ -6,11 +6,11 @@
             <h3 class="covid-header">COVID-19 DATA</h3>
             <div class="login">
                 {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-                {% endfor %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
                 {% endif %}
                 {% block content %}
 
