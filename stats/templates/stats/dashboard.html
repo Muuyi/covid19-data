@@ -4,7 +4,8 @@
         <div class="col dashboard-header">
             <h3>Covid-19 Data</h3>
             <h6>Welcome, <i><b>{{ user.username }}!</b></i></h6>
-            <a href="{% url 'logout' %}"><button class="btn btn-outline-danger"><i class="fas fa-power-off"></i> Logout</button></a>
+            <a href="{% url 'logout' %}"><button class="btn btn-outline-danger"><i class="fas fa-power-off"></i>
+                    Logout</button></a>
         </div>
     </div>
 </div>
@@ -12,11 +13,11 @@
     <div class="row">
         <div class="col">
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
             {% endif %}
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -32,5 +33,104 @@
         </div>
     </div>
 </div>
-
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table id="covid-data" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>iso_code</th>
+                            <th>continent</th>
+                            <th> location</th>
+                            <th>date</th>
+                            <th>total_cases</th>
+                            <th>new_cases</th>
+                            <th>new_cases_smoothed</th>
+                            <th>total_deaths</th>
+                            <th>new_deaths</th>
+                            <th>new_deaths_smoothed</th>
+                            <th>total_cases_per_million</th>
+                            <th>new_cases_per_million</th>
+                            <th>new_cases_smoothed_per_million</th>
+                            <th>total_deaths_per_million</th>
+                            <th>new_deaths_per_million</th>
+                            <th>new_deaths_smoothed_per_million</th>
+                            <th>new_tests</th>
+                            <th>total_tests</th>
+                            <th>total_tests_per_thousand</th>
+                            <th>new_tests_per_thousand</th>
+                            <th>new_tests_smoothed</th>
+                            <th>new_tests_smoothed_per_thousand</th>
+                            <th>tests_per_case</th>
+                            <th>positive_rate</th>
+                            <th>tests_units</th>
+                            <th>stringency_index</th>
+                            <th>population</th>
+                            <th>population_density</th>
+                            <th>median_age</th>
+                            <th>aged_65_older</th>
+                            <th>aged_70_older</th>
+                            <th>gdp_per_capita</th>
+                            <th>extreme_poverty</th>
+                            <th>cardiovasc_death_rate</th>
+                            <th>diabetes_prevalence</th>
+                            <th>female_smokers</th>
+                            <th>male_smokers</th>
+                            <th>handwashing_facilities</th>
+                            <th>hospital_beds_per_thousand</th>
+                            <th>life_expectancy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>iso_code</th>
+                            <th>continent</th>
+                            <th> location</th>
+                            <th>date</th>
+                            <th>total_cases</th>
+                            <th>new_cases</th>
+                            <th>new_cases_smoothed</th>
+                            <th>total_deaths</th>
+                            <th>new_deaths</th>
+                            <th>new_deaths_smoothed</th>
+                            <th>total_cases_per_million</th>
+                            <th>new_cases_per_million</th>
+                            <th>new_cases_smoothed_per_million</th>
+                            <th>total_deaths_per_million</th>
+                            <th>new_deaths_per_million</th>
+                            <th>new_deaths_smoothed_per_million</th>
+                            <th>new_tests</th>
+                            <th>total_tests</th>
+                            <th>total_tests_per_thousand</th>
+                            <th>new_tests_per_thousand</th>
+                            <th>new_tests_smoothed</th>
+                            <th>new_tests_smoothed_per_thousand</th>
+                            <th>tests_per_case</th>
+                            <th>positive_rate</th>
+                            <th>tests_units</th>
+                            <th>stringency_index</th>
+                            <th>population</th>
+                            <th>population_density</th>
+                            <th>median_age</th>
+                            <th>aged_65_older</th>
+                            <th>aged_70_older</th>
+                            <th>gdp_per_capita</th>
+                            <th>extreme_poverty</th>
+                            <th>cardiovasc_death_rate</th>
+                            <th>diabetes_prevalence</th>
+                            <th>female_smokers</th>
+                            <th>male_smokers</th>
+                            <th>handwashing_facilities</th>
+                            <th>hospital_beds_per_thousand</th>
+                            <th>life_expectancy</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% include 'stats/footer.html' %}

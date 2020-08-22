@@ -32,7 +32,7 @@ class CovidData(models.Model):
     new_tests_smoothed_per_thousand = models.DecimalField(max_digits=20,decimal_places=4,null=True)	
     tests_per_case = models.IntegerField(null=True) 	
     positive_rate = models.DecimalField(max_digits=20,decimal_places=4,null=True)	
-    tests_units = models.IntegerField(null=True)	
+    tests_units = models.CharField(max_length=255,null=True)	
     stringency_index = models.DecimalField(max_digits=20,decimal_places=4,null=True)	
     population = models.IntegerField(null=True)	
     population_density = models.DecimalField(max_digits=20,decimal_places=4,null=True)	

@@ -3,37 +3,58 @@ from . models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from . forms import UserRegisterForm,CsvForm
+from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
 import csv,io
 from decimal import Decimal
+from django_datatables_view.base_datatable_view import BaseDatatableView
+from django.utils.html import escape
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes,force_text,DjangoUnicodeDecodeError
+from . utils import generate_token
+from django.conf import settings
 # Create your views here.
-def index(request):
-    context = {
-        # 'data' : CovidData.objects.all()
-    }
-    return render(request,'stats/login.html',context)
+class LoginView(View):
+    def get(self,request):
+        return render(request,'stats/login.html')
 #Registration
-def register(request):
-    if request.method == 'POST':
+class RegistrationView(View):
+    def get(self,request):
+        form = UserRegisterForm()
+        return render(request,'stats/register.html',{'form':form})
+    def post(self,request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get("username")
-            email = form.cleaned_data("email")
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            email = user.email
             email_subject = "Activate your account"
+            msg = render_to_string('stats/activate.html',
+                {
+                    'user':user,
+                    'domain':current_site.domain,
+                    'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token':generate_token.make_token(user)
+                }
+            )
             email_body = ''
             email_send = EmailMessage(
                 email_subject,
-                email_body,
-                'noreply@covid19data.com',
+                msg,
+                'noreply@muuyiandrew.com',
                 [email]
             )
+            email_send.send()
             messages.success(request, f'Your account has been successfully created! You can now login')
             return redirect('login')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'stats/register.html',{'form':form})
+        else:
+            form = UserRegisterForm()
+        return render(request, 'stats/register.html',{'form':form})
 #Dashboard
 @login_required
 def dashboard(request):
@@ -57,96 +78,81 @@ def dashboard(request):
                         continent = column[1],
                         location = column[2],
                         date = column[3],
-                        total_cases = column[4],	
-                        new_cases = column[5],		
-                        new_cases_smoothed = Decimal(column[6]),	
-                        total_deaths = column[7],	
-                        new_deaths = column[8],	
-                        new_deaths_smoothed = Decimal(column[9]),	
-                        total_cases_per_million	= Decimal(column[10]),
-                        new_cases_per_million = Decimal(column[11]),
-                        new_cases_smoothed_per_million = Decimal(column[12]),	
-                        total_deaths_per_million = column[13],	
-                        new_deaths_per_million = Decimal(column[14]),	
-                        new_deaths_smoothed_per_million = Decimal(column[15]),	
-                        new_tests = column[16],	
-                        total_tests = column[17],
-                        total_tests_per_thousand = Decimal(column[18]),	
-                        new_tests_per_thousand = Decimal(column[19]),	
-                        new_tests_smoothed = Decimal(column[20]),	
-                        new_tests_smoothed_per_thousand = Decimal(column[21]),	
-                        tests_per_case = column[22], 	
-                        positive_rate = Decimal(column[23]),	
+                        total_cases = int(float('0'+column[4])),	
+                        new_cases = int(float('0'+column[5])),		
+                        new_cases_smoothed = Decimal('0'+column[6]),	
+                        total_deaths = int(float('0'+column[7])),	
+                        new_deaths = int(float('0'+column[8])),	
+                        new_deaths_smoothed = Decimal('0'+column[9]),	
+                        total_cases_per_million	= Decimal('0'+column[10]),
+                        new_cases_per_million = Decimal('0'+column[11]),
+                        new_cases_smoothed_per_million = Decimal('0'+column[12]),	
+                        total_deaths_per_million = Decimal('0'+column[13]),	
+                        new_deaths_per_million = Decimal('0'+column[14]),	
+                        new_deaths_smoothed_per_million = Decimal('0'+column[15]),	
+                        new_tests = int(float('0'+column[16])),	
+                        total_tests = int(float('0'+column[17])),
+                        total_tests_per_thousand = Decimal('0'+column[18]),	
+                        new_tests_per_thousand = Decimal('0'+column[19]),	
+                        new_tests_smoothed = Decimal('0'+column[20]),	
+                        new_tests_smoothed_per_thousand = Decimal('0'+column[21]),	
+                        tests_per_case = int(float('0'+column[22])), 	
+                        positive_rate = Decimal('0'+column[23]),	
                         tests_units = column[24],	
-                        stringency_index = Decimal(column[25]),	
-                        population = column[26],	
-                        population_density = Decimal(column[27]),	
-                        median_age = Decimal(column[28]),	
-                        aged_65_older = Decimal(column[29]),	
-                        aged_70_older = Decimal(column[30]),
-                        gdp_per_capita = Decimal(column[31]),	
-                        extreme_poverty = Decimal(column[32]),
-                        cardiovasc_death_rate = Decimal(column[33]),	
-                        diabetes_prevalence = Decimal(column[34]),	
-                        female_smokers = column[35],	
-                        male_smokers = column[36],	
-                        handwashing_facilities = column[37],	
-                        hospital_beds_per_thousand = Decimal(column[38]),	
-                        life_expectancy = Decimal(column[39])
+                        stringency_index = Decimal('0'+column[25]),	
+                        population = int(float('0'+column[26])),	
+                        population_density = Decimal('0'+column[27]),	
+                        median_age = Decimal('0'+column[28]),	
+                        aged_65_older = Decimal('0'+column[29]),	
+                        aged_70_older = Decimal('0'+column[30]),
+                        gdp_per_capita = Decimal('0'+column[31]),	
+                        extreme_poverty = Decimal('0'+column[32]),
+                        cardiovasc_death_rate = Decimal('0'+column[33]),	
+                        diabetes_prevalence = Decimal('0'+column[34]),	
+                        female_smokers = int(float('0'+column[35])),	
+                        male_smokers = int(float('0'+column[36])),	
+                        handwashing_facilities = int(float('0'+column[37])),	
+                        hospital_beds_per_thousand = Decimal('0'+column[38]),	
+                        life_expectancy = Decimal('0'+column[39])
                     )
     return render(request, 'stats/dashboard.html',{'form':form})
-#UPLOAD CSV
-# def data_upload(request):
-#     form = CsvForm(request.POST or None, request.FILES or None)
-#     # template = 'dashboard.html'
-#     # csv_file = request.FILES['file']
-#     # if not csv_file.name.endswith('.csv'):
-#     #     messages.error[request,'This is not a csv file']
-#     # data_set = csv_file.read().decode('UTF-8')
-#     # io_string = io.StringIO(data_set)
-#     # next(io_string)
-#     # for column in csv.reader[io_string, delimiter=",", quotechar="|"];
-#     # _, created = CovidData.objects.update_or_create[
-#     #     iso_code = column[0]
-#     #     continent = column[1]
-#     #     location = column[2]
-#     #     date = column[3]
-#     #     total_cases = column[4]	
-#     #     new_cases = column[5]		
-#     #     new_cases_smoothed = column[6]	
-#     #     total_deaths = column[7]	
-#     #     new_deaths = column[8]	
-#     #     new_deaths_smoothed = column[9]	
-#     #     total_cases_per_million	= column[10]
-#     #     new_cases_per_million = column[11]
-#     #     new_cases_smoothed_per_million = column[12]	
-#     #     total_deaths_per_million = column[13]	
-#     #     new_deaths_per_million = column[14]	
-#     #     new_deaths_smoothed_per_million = column[15]	
-#     #     new_tests = column[16]	
-#     #     total_tests = column[17]
-#     #     total_tests_per_thousand = column[18]	
-#     #     new_tests_per_thousand = column[19]	
-#     #     new_tests_smoothed = column[20]	
-#     #     new_tests_smoothed_per_thousand = column[21]	
-#     #     tests_per_case = column[22] 	
-#     #     positive_rate = column[23]	
-#     #     tests_units = column[24]	
-#     #     stringency_index = column[25]	
-#     #     population = column[26]	
-#     #     population_density = column[27]	
-#     #     median_age = column[28]	
-#     #     aged_65_older = column[29]	
-#     #     aged_70_older = column[30]
-#     #     gdp_per_capita = column[31]	
-#     #     extreme_poverty = column[32]
-#     #     cardiovasc_death_rate = column[33]	
-#     #     diabetes_prevalence = column[34]	
-#     #     female_smokers = column[35]	
-#     #     male_smokers = column[36]	
-#     #     handwashing_facilities = column[37]	
-#     #     hospital_beds_per_thousand = column[38]	
-#     #     life_expectancy = column[39]
-#     # ]
-#     # context = {}
-#     return render(request,'stats/dashboard.html',{'form':form})
+#ACTIVATE ACCOUNT VIEW
+class AccountActivateView(View):
+    def get(sef,request,uidb64,token):
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except Exception as e:
+            user = None
+        if ser is not None and generate_token.check_token(user,token):
+            user.is_active = True
+            user.save()
+            messages.info(request,'Account activated successfully!Login to continue!')
+            return redirect('login')
+        return render(request,'stats/activate_failed.html',status=401)
+##DATATABLE VIEW
+class DataTableView(BaseDatatableView):
+    model = CovidData
+    columns = ['iso_code','continent','location','date','total_cases','new_cases','new_cases_smoothed','total_deaths','new_deaths','new_deaths_smoothed','total_cases_per_million','new_cases_per_million','new_cases_smoothed_per_million','total_deaths_per_million','new_deaths_per_million','new_deaths_smoothed_per_million','new_tests','total_tests','total_tests_per_thousand','new_tests_per_thousand','new_tests_smoothed','new_tests_smoothed_per_thousand','tests_per_case','positive_rate','tests_units','stringency_index','population','population_density','median_age','aged_65_older','aged_70_older','gdp_per_capita','extreme_poverty','cardiovasc_death_rate','diabetes_prevalence','female_smokers','male_smokers','handwashing_facilities','hospital_beds_per_thousand','life_expectancy']
+    order_columns = ['iso_code','continent','location','date','total_cases','new_cases','new_cases_smoothed','total_deaths','new_deaths','new_deaths_smoothed','total_cases_per_million','new_cases_per_million','new_cases_smoothed_per_million','total_deaths_per_million','new_deaths_per_million','new_deaths_smoothed_per_million','new_tests','total_tests','total_tests_per_thousand','new_tests_per_thousand','new_tests_smoothed','new_tests_smoothed_per_thousand','tests_per_case','positive_rate','tests_units','stringency_index','population','population_density','median_age','aged_65_older','aged_70_older','gdp_per_capita','extreme_poverty','cardiovasc_death_rate','diabetes_prevalence','female_smokers','male_smokers','handwashing_facilities','hospital_beds_per_thousand','life_expectancy']
+    max_display_length = 500
+
+    def filter_queryset(self, qs):
+        # use parameters passed in GET request to filter queryset
+
+        # simple example:
+        search = self.request.GET.get('search[value]', None)
+        if search:
+            qs = qs.filter(name__istartswith=search)
+
+        # more advanced example using extra parameters
+        filter_customer = self.request.GET.get('customer', None)
+
+        if filter_customer:
+            customer_parts = filter_customer.split(' ')
+            qs_params = None
+            for part in customer_parts:
+                q = Q(customer_firstname__istartswith=part)|Q(customer_lastname__istartswith=part)
+                qs_params = qs_params | q if qs_params else q
+            qs = qs.filter(qs_params)
+        return qs

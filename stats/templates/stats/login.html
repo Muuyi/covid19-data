@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="content-section">
+    <h1 class="login-h1">Login</h1>
         <form method="POST">
             {% csrf_token %}
             {{ form | crispy }}
@@ -10,7 +11,7 @@
             </div>
         </form>
         <div>
-            <small>Do you need an account? <a href="{% url 'register' %}">Sign Up</a></small>
+            <center><small>Do you need an account? <a href="{% url 'register' %}">Sign Up</a></small></center>
         </div>
     </div>
 </div>

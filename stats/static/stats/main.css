@@ -17,6 +17,9 @@
     width:100%;
     background-color:#FFFFFF;
 }
+.login-h1{
+    text-align:center;
+}
 .dashboard-header{
     background-color:#22313f;
     display:flex;
@@ -48,5 +51,6 @@
     .login{
         min-width:300px;
         background-color:#FFFFFF;
+        padding:20px;
     }
 }
