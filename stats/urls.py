@@ -7,6 +7,6 @@ urlpatterns = [
     path('register/', views.RegistrationView.as_view(), name='register'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('datatables-data/',views.DataTableView.as_view(),name='datatables-data'),
-    path('activate/<uid>/<token>', views.AccountActivateView.as_view(),name='activate')
+    path('activate/<uidb64>/<token>', views.AccountActivateView.as_view(),name='activate')
     # path('data-upload', views.data_upload,name="data_upload")
 ]

@@ -3,11 +3,38 @@
 {% block content %}
 <div class="content-section">
     <h1 class="login-h1">Register</h1>
-    <form method="POST">
+    <form method="POST" autocomplete="off">
         {% csrf_token %}
-        {{ form | crispy }}
+        <!-- {{ form | crispy }} -->
         <div class="form-group">
-            <button type="submit" class="btn btn-info">Sign Up Today</button>
+            <label for="">Username</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fas fa-user"></i></div>
+                </div>
+                <input type="text" class="form-control" name="username" placeholder="Username">
+              </div>
+        </div>
+        <div class="form-group">
+            <label for="">Email</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+                </div>
+                <input type="text" class="form-control" name="email" placeholder="Email">
+              </div>
+        </div>
+        <div class="form-group">
+            <label for="">Password</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></div>
+                </div>
+                <input type="password" class="form-control" name="password" placeholder="Password">
+              </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="button">Sign Up Today</button>
         </div>
     </form>
     <div>

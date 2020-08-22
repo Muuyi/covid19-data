@@ -1,3 +1,16 @@
+.button{
+    width:100%;
+    padding:5px;
+    background-color:#0000FF;
+    color:#FFFFFF;
+    border-color:#0000FF;
+}
+.button:hover{
+    background-color:#00008B;
+    border-color:#00008B;
+    cursor:pointer;
+    font-weight:bolder;  
+}
 .covid-header{
     text-align:center;
 }
@@ -49,7 +62,7 @@
         font-weight:bolder;
     }
     .login{
-        min-width:300px;
+        min-width:400px;
         background-color:#FFFFFF;
         padding:20px;
     }

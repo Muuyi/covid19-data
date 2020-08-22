@@ -16,6 +16,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes,force_text,DjangoUnicodeDecodeError
 from . utils import generate_token
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.urls import reverse
 # Create your views here.
 class LoginView(View):
     def get(self,request):
@@ -26,35 +28,35 @@ class RegistrationView(View):
         form = UserRegisterForm()
         return render(request,'stats/register.html',{'form':form})
     def post(self,request):
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        if not User.objects.filter(email=email).exists():
+            if len(password) < 6:
+                messages.error(request,'Password is too short')
+                return render(request,'stats/register.html')
+            user = User.objects.create_user(username=username,email=email)
+            user.set_password(password)
             user.is_active = False
             user.save()
-            current_site = get_current_site(request)
-            email = user.email
             email_subject = "Activate your account"
-            msg = render_to_string('stats/activate.html',
-                {
-                    'user':user,
-                    'domain':current_site.domain,
-                    'uid':urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token':generate_token.make_token(user)
-                }
-            )
-            email_body = ''
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            link = reverse('activate',kwargs={'uidb64':uidb64,'token':generate_token.make_token(user)})
+            current_site = get_current_site(request).domain
+            activate_url = 'http://'+current_site+link
+            email_body = 'Hi '+user.username+'\n Please click the link below to activate your account \n'+activate_url
             email_send = EmailMessage(
                 email_subject,
-                msg,
+                email_body,
                 'noreply@muuyiandrew.com',
                 [email]
             )
-            email_send.send()
-            messages.success(request, f'Your account has been successfully created! You can now login')
+            email_send.send(fail_silently=False)
+            messages.info(request, f'Your account has been successfully created!Login to your email address to activate your account')
             return redirect('login')
         else:
-            form = UserRegisterForm()
-        return render(request, 'stats/register.html',{'form':form})
+            messages.error(request, f'This email already exists! Please use another email')
+            return redirect('register')
 #Dashboard
 @login_required
 def dashboard(request):

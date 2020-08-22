@@ -130,9 +130,9 @@ MEDIA_ROOT = os.path.join(os.path.dirname('base_dir'), 'media')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='muuyiandrew2015@gmail.com'
+EMAIL_HOST_PASSWORD='Mitchel@Yoga.2019'
+EMAIL_USE_TLS=True
+EMAIL_PORT=587
 
