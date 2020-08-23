@@ -135,4 +135,5 @@ EMAIL_HOST_USER='muuyiandrew2015@gmail.com'
 EMAIL_HOST_PASSWORD='Mitchel@Yoga.2019'
 EMAIL_USE_TLS=True
 EMAIL_PORT=587
+DEFAULT_FROM_EMAIL = 'noreply@muuyiandrew.com'
 

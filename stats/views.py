@@ -55,7 +55,7 @@ class RegistrationView(View):
             messages.info(request, f'Your account has been successfully created!Login to your email address to activate your account')
             return redirect('login')
         else:
-            messages.error(request, f'This email already exists! Please use another email')
+            messages.warning(request, f'This email already exists! Please use another email')
             return redirect('register')
 #Dashboard
 @login_required
@@ -81,8 +81,8 @@ def dashboard(request):
                         location = column[2],
                         date = column[3],
                         total_cases = int(float('0'+column[4])),	
-                        new_cases = int(float('0'+column[5])),		
-                        new_cases_smoothed = Decimal('0'+column[6]),	
+                        new_cases = column[5],		
+                        new_cases_smoothed = column[6],	
                         total_deaths = int(float('0'+column[7])),	
                         new_deaths = int(float('0'+column[8])),	
                         new_deaths_smoothed = Decimal('0'+column[9]),	
@@ -124,12 +124,15 @@ class AccountActivateView(View):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=uid)
+            if not generate_token.check_token(user,token):
+                messages.info(request,'Your account is already activated!Login to continue!')
+                return redirect('login')
         except Exception as e:
             user = None
-        if ser is not None and generate_token.check_token(user,token):
+        if user is not None and generate_token.check_token(user,token):
             user.is_active = True
             user.save()
-            messages.info(request,'Account activated successfully!Login to continue!')
+            messages.success(request,'Account activated successfully!Login to continue!')
             return redirect('login')
         return render(request,'stats/activate_failed.html',status=401)
 ##DATATABLE VIEW
