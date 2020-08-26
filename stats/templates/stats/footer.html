@@ -12,7 +12,9 @@
             $('#covid-data').dataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{% url 'datatables-data' %}"
+                "ajax": {
+                    "url":"{% url 'datatables-data' %}",
+                },
             });
         });
     </script>

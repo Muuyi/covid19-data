@@ -18,6 +18,7 @@ from . utils import generate_token
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.db.models import Q
 # Create your views here.
 class LoginView(View):
     def get(self,request):
@@ -60,6 +61,7 @@ class RegistrationView(View):
 #Dashboard
 @login_required
 def dashboard(request):
+    dt = CovidData.objects.all()[0:100]
     form = CsvForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save()
@@ -117,7 +119,7 @@ def dashboard(request):
                         hospital_beds_per_thousand = Decimal('0'+column[38]),	
                         life_expectancy = Decimal('0'+column[39])
                     )
-    return render(request, 'stats/dashboard.html',{'form':form})
+    return render(request, 'stats/dashboard.html',{'form':form,'dt':dt})
 #ACTIVATE ACCOUNT VIEW
 class AccountActivateView(View):
     def get(sef,request,uidb64,token):
@@ -143,21 +145,10 @@ class DataTableView(BaseDatatableView):
     max_display_length = 500
 
     def filter_queryset(self, qs):
-        # use parameters passed in GET request to filter queryset
+            # use parameters passed in GET request to filter queryset
 
         # simple example:
         search = self.request.GET.get('search[value]', None)
         if search:
-            qs = qs.filter(name__istartswith=search)
-
-        # more advanced example using extra parameters
-        filter_customer = self.request.GET.get('customer', None)
-
-        if filter_customer:
-            customer_parts = filter_customer.split(' ')
-            qs_params = None
-            for part in customer_parts:
-                q = Q(customer_firstname__istartswith=part)|Q(customer_lastname__istartswith=part)
-                qs_params = qs_params | q if qs_params else q
-            qs = qs.filter(qs_params)
+            qs = qs.filter(Q(iso_code__icontains=search) | Q(continent__icontains=search) | Q(location__icontains=search) | Q(date__icontains=search) | Q(total_cases__icontains=search) | Q(new_cases__icontains=search))
         return qs

@@ -36,6 +36,144 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
+            {% comment %} <div class="table-responsive">
+                <table class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>iso_code</th>
+                            <th>continent</th>
+                            <th> location</th>
+                            <th>date</th>
+                            <th>total_cases</th>
+                            <th>new_cases</th>
+                            <th>new_cases_smoothed</th>
+                            <th>total_deaths</th>
+                            <th>new_deaths</th>
+                            <th>new_deaths_smoothed</th>
+                            <th>total_cases_per_million</th>
+                            <th>new_cases_per_million</th>
+                            <th>new_cases_smoothed_per_million</th>
+                            <th>total_deaths_per_million</th>
+                            <th>new_deaths_per_million</th>
+                            <th>new_deaths_smoothed_per_million</th>
+                            <th>new_tests</th>
+                            <th>total_tests</th>
+                            <th>total_tests_per_thousand</th>
+                            <th>new_tests_per_thousand</th>
+                            <th>new_tests_smoothed</th>
+                            <th>new_tests_smoothed_per_thousand</th>
+                            <th>tests_per_case</th>
+                            <th>positive_rate</th>
+                            <th>tests_units</th>
+                            <th>stringency_index</th>
+                            <th>population</th>
+                            <th>population_density</th>
+                            <th>median_age</th>
+                            <th>aged_65_older</th>
+                            <th>aged_70_older</th>
+                            <th>gdp_per_capita</th>
+                            <th>extreme_poverty</th>
+                            <th>cardiovasc_death_rate</th>
+                            <th>diabetes_prevalence</th>
+                            <th>female_smokers</th>
+                            <th>male_smokers</th>
+                            <th>handwashing_facilities</th>
+                            <th>hospital_beds_per_thousand</th>
+                            <th>life_expectancy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in dt%}
+                        <tr>
+                            <td>{{ item.iso_code }}</td>
+                            <td>{{ item.continent }}</td>
+                            <td>{{ item.location }}</td>
+                            <td>{{ item.date }}</td>
+                            <td>{{ item.total_cases }}</td>
+                            <td>{{ item.new_cases }}</td>
+                            <td>{{ item.new_cases_smoothed }}</td>
+                            <td>{{ item.total_deaths }}</td>
+                            <td>{{ item.new_deaths }}</td>
+                            <td>{{ item.new_deaths_smoothed }}</td>
+                            <td>{{ item.total_cases_per_million }}</td>
+                            <td>{{ item.new_cases_per_million }}</td>
+                            <td>{{ item.new_cases_smoothed_per_million }}</td>
+                            <td>{{ item.total_deaths_per_million }}</td>
+                            <td>{{ item.new_deaths_per_million }}</td>
+                            <td>{{ item.new_deaths_smoothed_per_million }}</td>
+                            <td>{{ item.new_tests }}</td>
+                            <td>{{ item.total_tests }}</td>
+                            <td>{{ item.total_tests_per_thousand }}</td>
+                            <td>{{ item.new_tests_per_thousand }}</td>
+                            <td>{{ item.new_tests_smoothed }}</td>
+                            <td>{{ item.new_tests_smoothed_per_thousand }}</td>
+                            <td>{{ item.tests_per_case }}</td>
+                            <td>{{ item.positive_rate }}</td>
+                            <td>{{ item.tests_units }}</td>
+                            <td>{{ item.stringency_index }}</td>
+                            <td>{{ item.population }}</td>
+                            <td>{{ item.population_density }}</td>
+                            <td>{{ item.median_age }}</td>
+                            <td>{{ item.aged_65_older }}</td>
+                            <td>{{ item.aged_70_older }}</td>
+                            <td>{{ item.gdp_per_capita }}</td>
+                            <td>{{ item.extreme_poverty }}</td>
+                            <td>{{ item.cardiovasc_death_rate }}</td>
+                            <td>{{ item.diabetes_prevalence }}</td>
+                            <td>{{ item.female_smokers }}</td>
+                            <td>{{ item.male_smokers }}</td>
+                            <td>{{ item.handwashing_facilities }}</td>
+                            <td>{{ item.hospital_beds_per_thousand }}</td>
+                            <td>{{ item.life_expectancy }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>iso_code</th>
+                            <th>continent</th>
+                            <th> location</th>
+                            <th>date</th>
+                            <th>total_cases</th>
+                            <th>new_cases</th>
+                            <th>new_cases_smoothed</th>
+                            <th>total_deaths</th>
+                            <th>new_deaths</th>
+                            <th>new_deaths_smoothed</th>
+                            <th>total_cases_per_million</th>
+                            <th>new_cases_per_million</th>
+                            <th>new_cases_smoothed_per_million</th>
+                            <th>total_deaths_per_million</th>
+                            <th>new_deaths_per_million</th>
+                            <th>new_deaths_smoothed_per_million</th>
+                            <th>new_tests</th>
+                            <th>total_tests</th>
+                            <th>total_tests_per_thousand</th>
+                            <th>new_tests_per_thousand</th>
+                            <th>new_tests_smoothed</th>
+                            <th>new_tests_smoothed_per_thousand</th>
+                            <th>tests_per_case</th>
+                            <th>positive_rate</th>
+                            <th>tests_units</th>
+                            <th>stringency_index</th>
+                            <th>population</th>
+                            <th>population_density</th>
+                            <th>median_age</th>
+                            <th>aged_65_older</th>
+                            <th>aged_70_older</th>
+                            <th>gdp_per_capita</th>
+                            <th>extreme_poverty</th>
+                            <th>cardiovasc_death_rate</th>
+                            <th>diabetes_prevalence</th>
+                            <th>female_smokers</th>
+                            <th>male_smokers</th>
+                            <th>handwashing_facilities</th>
+                            <th>hospital_beds_per_thousand</th>
+                            <th>life_expectancy</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div> {% endcomment %}
             <div class="table-responsive">
                 <table id="covid-data" class="table table-striped" style="width:100%">
                     <thead>
